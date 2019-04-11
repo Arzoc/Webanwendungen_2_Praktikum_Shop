@@ -11,19 +11,19 @@
   <body>
 
     <header>
-      <nav class="navbar navbar-expand-sm bg-light">
+      <nav class="navbar navbar-expand-sm bg-light fixed-top">
           <a class="navbar-brand" href="#"><img src="logo.JPG" alt="logo"></a>
           <ul class="navbar-nav">
-            <li class="active nav-item">
+            <li class="active nav-item rounded">
               <a class="nav-link" href="#">Shop</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item rounded">
               <a class="nav-link" href="#">Bestellungen</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item rounded">
               <a class="nav-link" href="#">Account</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item rounded">
               <a class="nav-link" href="#">Hilfe</a>
             </li>
           </ul>
@@ -48,26 +48,99 @@
           <span class="carousel-control-next-icon"></span>
         </a>
       </div>
-      <div class="row">
-        <div class="col-sm-4 catitem">Klamotten</div>
-        <div class="col-sm-4 catitem">Elektronik</div>
-        <div class="col-sm-4 catitem">Bananen</div>
-        <div class="col-sm-4 catitem">Kirschen</div>
-        <div class="col-sm-4 catitem">Obst</div>
-        <div class="col-sm-4 catitem">Auto</div>
-        <div class="col-sm-4 catitem">baum</div>
-        <div class="col-sm-4 catitem">dumm</div>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 catitem-container">
+            <div class="thumbnail">
+              <a href="#">
+                <img src="categories/elektronik.jpg" class="img-fluid"/>
+                <div class="catitem-label">Elektronik</div>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-3 catitem-container">
+              <div class="thumbnail">
+                <a href="#">
+                  <img src="categories/nahrung.jpg" class="img-fluid"/>
+                  <div class="catitem-label">Nahrung</div>
+                </a>
+              </div>
+            </div>
+          <div class="col-lg-3 catitem-container">
+            <div class="thumbnail">
+              <a href="#">
+                <img src="categories/innenmobiliar.jpg" class="img-fluid"/>
+                <div class="catitem-label">Innenmobiliar</div>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-3 catitem-container">
+            <div class="thumbnail">
+              <a href="#">
+                <img src="categories/garten.jpg" class="img-fluid"/>
+                <div class="catitem-label">Garten</div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3 catitem-container">
+            <div class="thumbnail">
+              <a href="#">
+                <img src="categories/auto.jpg" class="img-fluid"/>
+                <div class="catitem-label">Autozubehör</div>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-3 catitem-container">
+            <div class="thumbnail">
+              <a href="#">
+                <img src="categories/werkzeug.jpg" class="img-fluid"/>
+                <div class="catitem-label">Handwerker</div>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-3 catitem-container">
+            <div class="thumbnail">
+              <a href="#">
+                <img src="categories/medien.jpg" class="img-fluid"/>
+                <div class="catitem-label">Medien</div>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-3 catitem-container">
+            <div class="thumbnail">
+              <a href="#">
+                <img src="categories/sonstiges.jpg" class="img-fluid"/>
+                <div class="catitem-label">Sonstiges</div>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
-        
     </main>
 
    
-   <footer class="footer bg-light" >
-	<div class="container" >
-	<a href="#">Impresssum</a>
-	<a href="#">Kontakt</a>
-	</div>
-   </footer>
+    <footer class="footer bg-light" >
+      <div class="row">
+        <div class="col-lg-4">
+          <p>Hans Meier</p>
+          <p>Strasse nummer</p>
+          <p>unso...</p>
+        </div>
+        <div class="col-lg-4">
+          <p> <a>Home</a> </p>
+          <p> <a>Impressum</a> </p>
+          <p> <a>AGB</a> </p>
+        </div>
+        <div class="col-lg-4">
+          <p> <a>Link 1</a> </p>
+          <p> <a>Link 2</a> </p>
+          <p> <a>Link 3</a> </p>
+        </div>
+      </div>      
+    </footer>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

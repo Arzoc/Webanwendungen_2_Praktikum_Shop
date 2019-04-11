@@ -1,5 +1,59 @@
-.catitem{text-align:center;
-		 border:1px solid black;
-		 padding:3%;}
-#offers{text-align:center;}
-.footer{}
+.nav-item {
+	padding-left: 10%;
+	padding-right: 10%;
+	margin: 0;
+}
+
+.navbar-nav {
+	height: 100%;
+}
+
+.nav-item:hover {
+	background-color: grey;
+}
+
+.nav-link {
+	color: black;
+}
+
+.nav-link {
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+}
+
+#angebote {
+	padding-top: 15%;
+}
+
+.catitem-container {
+	padding-bottom: 10%;
+}
+
+.catitem-label {
+	text-align: center;
+	color: black;
+	text-decoration: underline;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+	height: 10%;
+	width: 10%;
+	filter : invert(100%);
+}
+
+.carousel-indicators {
+	filter : invert(100%);
+}
+
+#offers {
+	text-align:center;
+}
+
+.footer {
+	text-align: center;
+}
+
+.footer .row {
+	padding-top: 1%;
+}
