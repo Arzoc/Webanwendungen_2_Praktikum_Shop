@@ -57,3 +57,16 @@
 .footer .row {
 	padding-top: 1%;
 }
+
+#login{ margin-left:auto;
+		margin-top:5%;
+		margin-bottom:5%;
+		padding:2%;
+		border:1px solid black;
+		width:30%;
+		border-radius:5px
+		}
+#noorder{ 
+		text-align:center;
+		margin:15%
+		}
