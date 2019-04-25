@@ -1,0 +1,55 @@
+-- execute after starting sqlite3 with database: .read <scriptname>
+-- enable foreign key support with sqlite3> PRAGMA foreign_keys = ON
+
+CREATE TABLE account (
+	id INTEGER PRIMARY KEY,
+	first_name TEXT NOT NULL,
+	last_name TEXT NOT NULL,
+	email TEXT NOT NULL UNIQUE,
+	phone TEXT,
+	last_login TEXT,
+	pwd_hash TEXT NOT NULL
+);
+
+CREATE TABLE session (
+	id INTEGER PRIMARY KEY,
+	cookie TEXT NOT NULL UNIQUE,
+	isactive INTEGER NOT NULL,
+	account_id INTEGER NOT NULL,
+	FOREIGN KEY (account_id) REFERENCES account (id)
+);
+
+CREATE TABLE paypal (
+	id INTEGER PRIMARY KEY,
+	email TEXT NOT NULL UNIQUE,
+	account_id INTEGER NOT NULL,
+	FOREIGN KEY (account_id) REFERENCES account (id)
+);
+
+CREATE TABLE creditcard (
+	id INTEGER PRIMARY KEY,
+	card_number TEXT NOT NULL UNIQUE,
+	expire TEXT NOT NULL,
+	first_name TEXT NOT NULL,
+	last_name TEXT NOT NULL,
+	account_id INTEGER NOT NULL,
+	FOREIGN KEY (account_id) REFERENCES account (id)
+);
+
+CREATE TABLE article (
+	id INTEGER PRIMARY KEY,
+	article_name TEXT NOT NULL,
+	category TEXT
+);
+
+
+CREATE TABLE order_history (
+	id INTEGER 	PRIMARY KEY,
+	order_state INTEGER NOT NULL,
+	quantity INTEGER NOT NULL,
+	article_id INTEGER NOT NULL,
+	account_id INTEGER NOT NULL,
+	FOREIGN KEY (account_id) REFERENCES account (id)
+	FOREIGN KEY (article_id) REFERENCES article(id)	
+);
+
