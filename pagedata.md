@@ -26,6 +26,7 @@ seiten:
   - action on failure
     * print error message
 - index
-  - daten: session cookie (optional)
+  - daten: 
+    * session cookie (optional)
 
 - neue seite mit warenkorb oder panel an der seite?
