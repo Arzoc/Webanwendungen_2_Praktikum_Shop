@@ -1,0 +1,5 @@
+insert into account (first_name, last_name, email, phone, last_login, pwd_hash) values ("Hans", "Mueller", "mueller@hans.de", "1122334455", "17:00 04/29/2019", "8881a0528946b82c745f1b8f548821aef60c2d18b67c5a156df02ae9095ee08c"), ("Walter", "Meier", "meier@walter", "98729847324", "18:00 04/29/2019", "8881a0528946b82c745f1b8f548821aef60c2d18b67c5a156df02ae9095ee08c"), ("ralf", "schnuter", "schnuter@ralf.de", "938743434", "19:00 04/29/2019", "cfdef42a4579a8e2e8fafa6ba9a8cf07afd6a1fa5a64f9c154b75ac92017acf3");
+insert into paypal (email, account_id) values ("andereemail@test.de", 1);
+insert into creditcard (card_number, expire, first_name, last_name, account_id) values ("0948350943850943", "01.01.2020", "anderer", "name", 2);
+insert into article (article_name, category) values ("banana", "food"), ("apple", "food"), ("acer pc", "electronic"), ("notebook", "electronic"), ("shirt", "clothes"), ("pant", "clothes"), ("hammer", "tools");
+insert into order_history (order_state, quantity, article_id, account_id) values (0, 10, 1, 1), (0, 4, 2, 2), (0, 100, 1, 2), (0, 200, 3, 3);
