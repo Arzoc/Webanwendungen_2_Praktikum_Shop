@@ -1,7 +1,11 @@
-seiten:
-- bestellungen
+##pages
+- orders_history
   - daten
     * session cookie (NICHT optional)
+  - action on success
+    * show orders for LOGGED IN user
+  - action on failure 
+    * show message
 - login
   - daten
     * username
@@ -12,7 +16,7 @@ seiten:
     * goto homepage with session cookie set
   - action on failure
     * stay on page, print error message
-- buy-article
+- buy_article
   - daten
     * session cookie (optional, null if anonymous)
     * article_id
