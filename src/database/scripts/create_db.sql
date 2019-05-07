@@ -14,7 +14,7 @@ CREATE TABLE account (
 CREATE TABLE session (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	cookie TEXT NOT NULL UNIQUE,
-	isactive INTEGER NOT NULL,
+	expires_at TEXT NOT NULL,
 	account_id INTEGER NOT NULL,
 	FOREIGN KEY (account_id) REFERENCES account (id)
 );
