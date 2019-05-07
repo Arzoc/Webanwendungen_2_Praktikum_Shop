@@ -39,9 +39,9 @@ CREATE TABLE creditcard (
 CREATE TABLE article (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	article_name TEXT NOT NULL,
-	category TEXT
+	category TEXT,
+	descript TEXT
 );
-
 
 CREATE TABLE order_history (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
