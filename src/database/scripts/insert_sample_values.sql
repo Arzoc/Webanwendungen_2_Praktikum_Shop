@@ -2,4 +2,5 @@ insert into account (first_name, last_name, email, phone, last_login, pwd_hash) 
 insert into paypal (email, account_id) values ("andereemail@test.de", 1);
 insert into creditcard (card_number, expire, first_name, last_name, account_id) values ("0948350943850943", "01.01.2020", "anderer", "name", 2);
 insert into article (article_name, category) values ("banana", "food"), ("apple", "food"), ("acer pc", "electronic"), ("notebook", "electronic"), ("shirt", "clothes"), ("pant", "clothes"), ("hammer", "tools");
-insert into order_history (order_state, quantity, article_id, account_id) values (0, 10, 1, 1), (0, 4, 2, 2), (0, 100, 1, 2), (0, 200, 3, 3);
+insert into order_history (order_state, account_id) values (0, 1), (0,2), (0,3);
+insert into orders (quantity, order_id, article_id) values (10, 0, 0), (10, 0, 1), (200, 1, 2);

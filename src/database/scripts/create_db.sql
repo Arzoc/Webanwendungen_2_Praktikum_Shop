@@ -46,10 +46,15 @@ CREATE TABLE article (
 CREATE TABLE order_history (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	order_state INTEGER NOT NULL,
-	quantity INTEGER NOT NULL,
-	article_id INTEGER NOT NULL,
 	account_id INTEGER NOT NULL,
 	FOREIGN KEY (account_id) REFERENCES account (id)
-	FOREIGN KEY (article_id) REFERENCES article(id)	
 );
 
+CREATE TABLE orders (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	quantity INTEGER NOT NULL,
+	order_id INTEGER NOT NULL,
+	article_id INTEGER NOT NULL,
+	FOREIGN KEY (order_id) REFERENCES order_history (id),
+	FOREIGN KEY (article_id) REFERENCES article (id)
+);
