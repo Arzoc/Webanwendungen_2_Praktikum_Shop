@@ -2,7 +2,7 @@
 - orders_overview.html // warenkorb uebersicht
 - login.html
   - send
-    - email (sha256)
+    - email
     - password hash (sha256)
   - server do
     - save session cookie
