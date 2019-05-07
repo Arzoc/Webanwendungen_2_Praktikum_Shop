@@ -1,6 +1,6 @@
 ### Developer Software Advise
 
-* Eclipse JEE: 2019-03 REclipse IDE for Enterprise Java Developers.
+* Eclipse JEE: 2019-03 R Eclipse IDE for Enterprise Java Developers.
     * Version: 2019-03 (4.11.0)
     * Build id: 20190314-1200
 * Tomcat: 9.0.17
