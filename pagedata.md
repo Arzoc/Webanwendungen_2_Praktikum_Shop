@@ -2,18 +2,17 @@
 - orders_overview.html // warenkorb uebersicht
 - login.html
   - send
-    - email
-    - password hash (sha256)
+    - jwt request
   - server do
     - save session cookie
   - recv
-    - session cookie
+    - jwt token
     - return value
   - client do
     - goto homepage / write error
 - create_user.html
   - send
-    - firstname 
+    - firstname
     - lastname
     - email
     - phone
@@ -29,10 +28,10 @@
 - checkout.html
   - send
     - json {
-        [ 
+        [
           article_id : ....
           quantity : ...
-        ], 
+        ],
         ... (mehr artikel)
     }
     - json {
@@ -62,12 +61,14 @@
   - client do
     - display article
 - article_in_category.html
-  - send
-    - kategorie id
-    - session cookie
+  - send (als queryparam -> url)
+    - kategorie name
+    - articles_per_page
+    - page number
+    - token
   - recv
     - json {
-        [ 
+        [
           artikel name : name
           preis : preis
           thumbnail : nail
@@ -76,7 +77,7 @@
          ...
       }
 - order_history.html
-  - send 
+  - send
     - session cookie
   - recv
     - json {
@@ -92,3 +93,4 @@
 
 
 - neue seite mit warenkorb oder panel an der seite?
+return value: json { return: <number>; [if return != 0 -> msg: errorMsg] }

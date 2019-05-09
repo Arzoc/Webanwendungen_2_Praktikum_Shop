@@ -47,6 +47,7 @@ CREATE TABLE order_history (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	order_state INTEGER NOT NULL,
 	account_id INTEGER NOT NULL,
+    buydate TEXT NOT NULL,
 	FOREIGN KEY (account_id) REFERENCES account (id)
 );
 
