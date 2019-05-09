@@ -2,7 +2,6 @@ package rest.services;
 
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -73,7 +72,7 @@ public class Users {
 			@Context HttpHeaders headers
 			) {
 		String authHeader = headers.getHeaderString(HttpHeaders.AUTHORIZATION);
-		if (authHeader == null || authHeader.trim().equals(""))
+		if (authHeader != null || !authHeader.trim().equals(""))
 			return Response.status(Response.Status.OK).entity("{ return: 2; msg: already token supplied; }").build();
 		Account account = new Account();
 		try {
@@ -94,7 +93,7 @@ public class Users {
 		try {
 			this.validateToken(authHeader);
 			//TODO
-			return Response.status(Response.Status.OK).build();
+			return Response.status(Response.Status.NOT_IMPLEMENTED).build();
 		} catch (InvalidTokenException e) {
 			Response.status(Response.Status.UNAUTHORIZED).build();
 		}

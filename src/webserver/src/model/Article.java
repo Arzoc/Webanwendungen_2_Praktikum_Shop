@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.Vector;
 
 import exceptions.DatabaseException;
+import exceptions.InvalidArticleIdException;
 
 public class Article extends SQLObject {
 
@@ -63,6 +64,25 @@ public class Article extends SQLObject {
 			return entries;
 		} catch (SQLException e) {
 			System.out.println(e.toString());
+			throw new DatabaseException();
+		}
+	}
+	
+	public static Article getById(long id) throws DatabaseException, InvalidArticleIdException {
+		Connection conn = Article.connectDatabase();
+		try {
+			PreparedStatement prep = conn.prepareStatement("select * from article where article.id = ?;");
+			prep.setLong(1, id);
+			ResultSet res = prep.executeQuery();
+			if (!res.next()) 
+				throw new InvalidArticleIdException();
+			return new Article(
+					res.getLong("id"),
+					res.getString("article_name"),
+					res.getString("category"),
+					res.getString("descript")
+					);
+		} catch (SQLException e) {
 			throw new DatabaseException();
 		}
 	}

@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 import com.google.gson.Gson;
 
 import exceptions.DatabaseException;
+import exceptions.InvalidArticleIdException;
 import model.Article;
 
 @Path("/articles")
@@ -46,6 +47,21 @@ public class Articles {
 			return Response.status(Response.Status.OK).entity(json).build();
 		} catch (DatabaseException e) {
 			return Response.status(Response.Status.OK).entity("{ return: 1; msg: DatabaseException; }").build();
+		}
+	}
+	
+	@GET
+	@Path("/view")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response view(@QueryParam("article_id") long article_id) {
+		Gson gson = new Gson();
+		try {
+			Article article = Article.getById(article_id);
+			return Response.status(Response.Status.OK).entity(gson.toJson(article)).build();
+		} catch (DatabaseException e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{ return: 1; msg: DatabaseError; }").build();
+		} catch (InvalidArticleIdException e) {
+			return Response.status(Response.Status.BAD_REQUEST).entity("{ return: 2; msg: InvalidArticleId; }").build();
 		}
 	}
 }

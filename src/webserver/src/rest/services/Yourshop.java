@@ -8,6 +8,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -35,7 +36,15 @@ public class Yourshop {
 		super();
 	}
 	
-	
+	@POST
+	@Path("/checkout")
+	public Response checkout(
+			@Context HttpHeaders httpHeaders, 
+			@FormParam("articles") String articles, 
+			@FormParam("payment") String payment) {
+		String authHeaders = httpHeaders.getHeaderString(HttpHeaders.AUTHORIZATION);
+		return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+	}
 	
 	
 }
