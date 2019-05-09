@@ -93,9 +93,12 @@ public class Users {
 		String authHeader = headers.getHeaderString(HttpHeaders.AUTHORIZATION);
 		try {
 			this.validateToken(authHeader);
+			//TODO
+			return Response.status(Response.Status.OK).build();
 		} catch (InvalidTokenException e) {
 			Response.status(Response.Status.UNAUTHORIZED).build();
 		}
+		return Response.status(Response.Status.OK).build();
 	}
 	
 	/* on invalid type value, return `now`, which invalidates token */
