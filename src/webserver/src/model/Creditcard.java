@@ -1,6 +1,6 @@
 package model;
 
-public class Creditcard {
+public class Creditcard extends SQLObject {
 
 	private long id, account_id;
 	private String card_number, expire, first_name, last_name;

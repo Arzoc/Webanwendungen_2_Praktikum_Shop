@@ -1,6 +1,6 @@
 package model;
 
-public class Paypal {
+public class Paypal extends SQLObject {
 
 	private long id, account_id;
 	private String email;

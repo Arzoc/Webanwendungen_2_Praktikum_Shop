@@ -1,6 +1,6 @@
 package model;
 
-public class Order {
+public class Order extends SQLObject {
 
 	private long id, order_id, article_id, quantity;
 	

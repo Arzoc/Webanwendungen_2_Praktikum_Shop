@@ -1,6 +1,8 @@
 package model;
 
-public class Session {
+
+/* actually not needed because we use token based auth... but for user tracking... */
+public class Session extends SQLObject {
 	
 	private long id, account_id;
 	private String cookie;
