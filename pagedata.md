@@ -1,6 +1,6 @@
 ## pages
 - orders_overview.html // warenkorb uebersicht
-- login.html
+- rest/users/login
   - send
     - jwt request
   - server do
@@ -10,7 +10,7 @@
     - return value
   - client do
     - goto homepage / write error
-- create_user.html
+- rest/users/create
   - send
     - firstname
     - lastname
@@ -25,22 +25,20 @@
     - return value
   - client do
     - goto homepage / write error
-- checkout.html
+- rest/checkout
   - send
-    - json {
-        [
-          article_id : ....
-          quantity : ...
-        ],
-        ... (mehr artikel)
-    }
-    - json {
-        id : id,
-        art : <paypal,credit,transfer,new>
-        new_param : <[],[...]>
-      }
-    }
-    - session cookie
+    - checkout_params =  {  
+        articles : [[  
+                      article_id : ....  
+                      quantity : ...  
+                    ],  
+                    ... (mehr artikel)  
+                    ]  
+        (optional) paypal_email : email; card_number : number  
+        payment_new : <[],[...]>  
+        reihenfolge: paypal(vorhanden?), card_number(vorhanden?), payment_new(vorhanden?), falls hier ankommen: error
+      }  
+    - jwt token
   - server do
     - insert into order_history, orders...
     - insert into pay methods
@@ -60,11 +58,11 @@
       }
   - client do
     - display article
-- article_in_category.html
+- rest/articles/by-category
   - send (als queryparam -> url)
     - kategorie name
-    - articles_per_page
-    - page number
+    - articles_per_page (>0)
+    - page number (start: 1)
     - token
   - recv
     - json {
@@ -76,7 +74,7 @@
          ]
          ...
       }
-- order_history.html
+- rest/users/order_history
   - send
     - session cookie
   - recv
