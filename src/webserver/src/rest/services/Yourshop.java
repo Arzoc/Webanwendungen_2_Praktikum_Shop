@@ -1,30 +1,23 @@
 package rest.services;
 
-import javax.crypto.KeyGenerator;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import javax.ws.rs.core.UriInfo;
 
-import exceptions.InvalidPasswordException;
-import exceptions.UserNotFoundException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import model.Account;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Date;
+import exceptions.DatabaseException;
+import exceptions.InvalidTokenException;
+import exceptions.InvalidTransactionParametersException;
+import other.CheckoutParameters;
+import other.FullOrder;
+import other.JwtManager;
 
 @Path("/")
 public class Yourshop {
@@ -40,10 +33,23 @@ public class Yourshop {
 	@Path("/checkout")
 	public Response checkout(
 			@Context HttpHeaders httpHeaders, 
-			@FormParam("articles") String articles, 
-			@FormParam("payment") String payment) {
+			@FormParam("checkout_params") String params) {
+		Gson gson = new Gson();
+		JwtManager jwt = JwtManager.getInstance();
 		String authHeaders = httpHeaders.getHeaderString(HttpHeaders.AUTHORIZATION);
-		return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+		try {
+			String token = jwt.validateToken(authHeaders);
+			String email = jwt.getEmail(token);
+			CheckoutParameters c = gson.fromJson(params, CheckoutParameters.class);
+			FullOrder.insert_transaction(c, email);
+			return Response.status(Response.Status.OK).build();
+		} catch (InvalidTokenException e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		} catch (JsonSyntaxException | InvalidTransactionParametersException e ) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		} catch (DatabaseException e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 	
 	

@@ -14,13 +14,15 @@ public class Article extends SQLObject {
 
 	private long id;
 	private String article_name, category, descript;
+	private float cost;
 	
-	public Article(long id, String article_name, String category, String descript) {
+	public Article(long id, String article_name, String category, String descript, float cost) {
 		super();
 		this.id = id;
 		this.article_name = article_name;
 		this.category = category;
 		this.descript = descript;
+		this.cost = cost;
 	}
 	
 	public static Vector<Article> getEntries() throws DatabaseException {
@@ -34,7 +36,8 @@ public class Article extends SQLObject {
 						res.getLong("id"),
 						res.getString("article_name"),
 						res.getString("category"),
-						res.getString("descript")
+						res.getString("descript"),
+						res.getFloat("cost")
 						));
 			}
 			Article.closeDatabase(conn);
@@ -57,7 +60,8 @@ public class Article extends SQLObject {
 						res.getLong("id"),
 						res.getString("article_name"),
 						res.getString("category"),
-						res.getString("descript")
+						res.getString("descript"),
+						res.getFloat("cost")
 						));
 			}
 			Article.closeDatabase(conn);
@@ -80,7 +84,8 @@ public class Article extends SQLObject {
 					res.getLong("id"),
 					res.getString("article_name"),
 					res.getString("category"),
-					res.getString("descript")
+					res.getString("descript"),
+					res.getFloat("cost")
 					);
 		} catch (SQLException e) {
 			throw new DatabaseException();
@@ -101,6 +106,10 @@ public class Article extends SQLObject {
 
 	public String getDescript() {
 		return descript;
+	}
+
+	public float getCost() {
+		return cost;
 	}
 	
 }

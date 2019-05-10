@@ -19,6 +19,8 @@ import model.Article;
 @Path("/articles")
 public class Articles {
 	
+	private static final int ARTICLES_LIST_DEFAULT_PER_PAGE = 50;
+	
 	@GET
 	@Path("by-category")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -34,6 +36,12 @@ public class Articles {
 				entries = Article.getEntries(category);
 			else 
 				entries = Article.getEntries();
+			
+			if (page == 0) 
+				page = 1;
+			if (per_page == 0) {
+				per_page = ARTICLES_LIST_DEFAULT_PER_PAGE;
+			}
 			
 			int start = per_page * (page - 1);
 			int end = per_page * page;

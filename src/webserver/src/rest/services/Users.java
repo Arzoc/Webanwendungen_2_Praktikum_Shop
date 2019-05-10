@@ -1,11 +1,11 @@
 package rest.services;
 
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.util.Calendar;
-import java.util.Date;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
 
-import javax.crypto.KeyGenerator;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -18,18 +18,18 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import com.google.gson.Gson;
+
 import exceptions.DatabaseException;
 import exceptions.InvalidPasswordException;
 import exceptions.InvalidTokenException;
 import exceptions.UserAlreadyExistsException;
 import exceptions.UserNotFoundException;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import model.Account;
+import model.Order;
+import model.SQLObject;
+import other.FullOrder;
+import other.JwtManager;
 
 @Path("/users")
 public class Users {
@@ -37,24 +37,25 @@ public class Users {
 	@Context
 	UriInfo uriInfo;
 	
-	private KeyGenerator keyGen;
 	
 	@POST
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_HTML)
-	public Response login(@FormParam("email") String email, @FormParam("password") String password) {
+	public Response login(@FormParam("email") String email, @FormParam("password") String passwordHash) {
+		JwtManager jwt = JwtManager.getInstance();
 		Account a = new Account();
 		a.setEmail(email.trim());
 		try { 
 			a = Account.fill(a);
-			String passwordHash = Account.generatePasswordHash(password);
+			/* if password in clear form, uncomment this */
+			//String passwordHash = Account.generatePasswordHash(password);
 			a.checkPassword(passwordHash);
-			String token = this.issueToken(a.getEmail());
+			String token = jwt.issueToken(a.getEmail(), uriInfo.getAbsolutePath().toString().trim());
 			return Response.status(Response.Status.OK).header("Authorization", "Bearer " + token).build();
 		} catch (UserNotFoundException | InvalidPasswordException e) {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
-		} catch (DatabaseException | NoSuchAlgorithmException e) {
+		} catch (DatabaseException /*| NoSuchAlgorithmException*/ e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
@@ -72,7 +73,7 @@ public class Users {
 			@Context HttpHeaders headers
 			) {
 		String authHeader = headers.getHeaderString(HttpHeaders.AUTHORIZATION);
-		if (authHeader != null || !authHeader.trim().equals(""))
+		if (authHeader != null && !authHeader.trim().equals(""))
 			return Response.status(Response.Status.OK).entity("{ return: 2; msg: already token supplied; }").build();
 		Account account = new Account();
 		try {
@@ -89,50 +90,56 @@ public class Users {
 	@Path("/order_history")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response order_history(@Context HttpHeaders headers) {
+		JwtManager jwt = JwtManager.getInstance();
 		String authHeader = headers.getHeaderString(HttpHeaders.AUTHORIZATION);
 		try {
-			this.validateToken(authHeader);
-			//TODO
-			return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+			if (authHeader == null) 
+				throw new InvalidTokenException();
+			String token = jwt.validateToken(authHeader);
+			String email = jwt.getEmail(token);
+			String json = this.get_formatted_order_history(email);
+			return Response.status(Response.Status.OK).entity(json).build();
 		} catch (InvalidTokenException e) {
-			Response.status(Response.Status.UNAUTHORIZED).build();
-		}
-		return Response.status(Response.Status.OK).build();
-	}
-	
-	/* on invalid type value, return `now`, which invalidates token */
-	private static Date getTimeInFuture(long var, int type) {
-		switch (type) {
-		case 0: /* seconds */
-			return new Date(Calendar.getInstance().getTimeInMillis() + (var * 1000));
-		case 1: /* minutes */
-			return new Date(Calendar.getInstance().getTimeInMillis() + (var * 60000));
-		case 2: /* hours */
-			return new Date(Calendar.getInstance().getTimeInMillis() + (var * 3600000));
-		default:
-			return new Date();
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		} catch (DatabaseException e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
-
-	private String issueToken(String email) {
-		Key key = this.keyGen.generateKey();
-		return Jwts.builder()
-				.setSubject(email)
-				.setIssuer(uriInfo.getAbsolutePath().toString())
-				.setIssuedAt(new Date())
-				.setExpiration(Users.getTimeInFuture(30, 1))
-				.signWith(SignatureAlgorithm.HS512, key)
-				.compact();
-	}
 	
-	private void validateToken(String authHeader) throws InvalidTokenException {
-		String token = authHeader.substring("Bearer".length()).trim();
+	private String get_formatted_order_history(String email) throws DatabaseException {
 		try {
-			Key key = this.keyGen.generateKey();
-			Jwts.parser().setSigningKey(key).parseClaimsJws(token);
-		} catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
-			throw new InvalidTokenException();
-		}
+			Gson gson = new Gson();
+			Connection conn = SQLObject.connectDatabase();
+			PreparedStatement prep = conn.prepareStatement("select * from order_history,account where order_history.account_id = account.id and account.email = ?;");
+			prep.setString(1, email.trim());
+			ResultSet order_ids = prep.executeQuery();
+			Vector<FullOrder> orders = new Vector<FullOrder>();
+			ResultSet tmpRes;
+			Vector<Order> tmpOrders;
+			while (order_ids.next()) {
+				tmpOrders = new Vector<Order>();
+				prep = conn.prepareStatement("select * from orders where order_id = ?;");
+				prep.setLong(1, order_ids.getLong("id"));
+				tmpRes = prep.executeQuery();
+				while (tmpRes.next()) {
+					tmpOrders.add(new Order(
+							tmpRes.getLong("id"),
+							tmpRes.getLong("order_id"),
+							tmpRes.getLong("article_id"),
+							tmpRes.getLong("quantity"),
+							tmpRes.getFloat("cost_at_purchse")
+							));
+				}
+				orders.add(new FullOrder(
+						tmpOrders,
+						order_ids.getString("buydate")
+						));
+			}
+			SQLObject.closeDatabase(conn);
+			return gson.toJson(orders);
+		} catch (SQLException e) {
+			throw new DatabaseException();
+		}		
 	}
 	
 }
