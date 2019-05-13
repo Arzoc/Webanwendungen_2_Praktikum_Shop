@@ -1,7 +1,6 @@
 .nav-item {
 	padding-left: 10%;
 	padding-right: 10%;
-	margin: 0;
 }
 
 .navbar-nav {
@@ -27,13 +26,13 @@
 }
 
 .catitem-container {
-	padding-bottom: 10%;
+	padding-bottom: 2%;
 }
 
 .catitem-label {
 	text-align: center;
 	color: black;
-	text-decoration: underline;
+	text-decoration: none;
 }
 
 .carousel-control-prev-icon, .carousel-control-next-icon {
