@@ -2,7 +2,8 @@
 - orders_overview.html // warenkorb uebersicht
 - rest/users/login
   - send
-    - jwt request
+    - email  
+    - password hash (sha256)  
   - server do
     - save session cookie
   - recv
