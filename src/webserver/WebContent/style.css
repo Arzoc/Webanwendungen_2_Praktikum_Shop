@@ -96,3 +96,13 @@
 #checkout-button{
 		margin-bottom:2%;
 }
+
+#category-heading{
+		text-align:center;
+}
+
+#category-container{
+		border-radius:5px;
+		border:1px solid black;
+		margin-bottom:2%;
+}
