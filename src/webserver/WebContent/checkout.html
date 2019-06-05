@@ -43,24 +43,27 @@
   <div class="py-5 text-center">
     
     <h2>Kauf abschließen</h2>
-    <p class="lead">Bitte füllen sie das Formaular aus um zu kaufen</p>
+    <p class="lead">Bitte füllen sie das Formular aus um zu kaufen</p>
   </div>
 
 
 
       
    
-    <div class="col-md-8 order-md-1">
+    <div class="row" id="checkout-row">
+    <div class="col-md-2">
+      </div>
+    <div class="bg-light col-md-8 order-md-1" id="checkout-formular">
       <h4 class="mb-3">Rechnungsadresse</h4>
-      <form class="needs-validation" novalidate>
+      <form class="needs-validation" novalidate="">
         <div class="row">
           <div class="col-md-6 mb-3">
             <label for="firstName">Vorname</label>
-            <input type="text" class="form-control" id="firstName" placeholder="" value="" >
+            <input type="text" class="form-control" id="firstName" value="" placeholder="Vorname">
                 </div>
           <div class="col-md-6 mb-3">
             <label for="lastName">Nachname</label>
-            <input type="text" class="form-control" id="lastName" placeholder="" value="" >
+            <input type="text" class="form-control" id="lastName" value="" placeholder="Nachname">
                 </div>
                     </div>
 
@@ -73,7 +76,7 @@
 
         <div class="mb-3">
           <label for="address">Addresse</label>
-          <input type="text" class="form-control" id="address" placeholder="Eine Straße" >
+          <input type="text" class="form-control" id="address" placeholder="Eine Straße">
             </div>
 
       
@@ -89,7 +92,7 @@
           
           <div class="mb-3">
             <label for="zip">Postleitzahl</label>
-            <input type="text" class="form-control" id="zip" placeholder="">
+            <input type="text" class="form-control" id="zip" placeholder="Postleitzahl">
                 </div>
        
         
@@ -98,28 +101,22 @@
 
         <div class="d-block my-3">
           <div class="custom-control custom-radio">
-            <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked >
+            <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked="">
             <label class="custom-control-label" for="credit">Kreditkarte</label>
           </div>
           
           <div class="custom-control custom-radio">
-            <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" >
+            <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input">
             <label class="custom-control-label" for="paypal">PayPal</label>
           </div>
         </div>
-        <div class="row">
         
-          <div class="col-md-6 mb-3">
-            <label for="cc-number">Kreditkartennummer</label>
-            <input type="text" class="form-control" id="cc-number" placeholder="" >
-           
-                </div>
-                    </div>
         
         <hr class="mb-4">
-        <button class="btn btn-primary btn-lg btn-block" type="submit">Kostenpflichtig bestellen</button>
+        <button type="submit" class="btn btn-secondary btn-lg btn-block">Kostenpflichtig bestellen</button>
       </form>
     </div>
+  </div>
   
 
    

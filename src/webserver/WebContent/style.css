@@ -83,3 +83,16 @@
 		text-align:center;
 		margin:15%
 		}
+		
+#checkout-formular{
+		border:2px solid grey; 
+		border-radius:5px;
+		}
+		
+#checkout-row{
+		margin-bottom:2%;
+}
+
+#checkout-button{
+		margin-bottom:2%;
+}
