@@ -96,6 +96,19 @@
 #checkout-button{
 		margin-bottom:2%;
 }
+#createuser-formular{
+		border:2px solid grey; 
+		border-radius:5px;
+		margin-top:3%;
+		}
+		
+#createuser-row{
+		margin-bottom:2%;
+}
+
+#createuser-button{
+		margin-bottom:2%;
+}
 
 #category-heading{
 		text-align:center;

@@ -39,13 +39,49 @@
     </header>
 
     <main>
-	<div class="container bg-light" id="login">
-	<h1>create_user.html</h1>
-	</div>
+	<div class="row" id="createuser-row">
+    <div class="col-md-2">
+      </div>
+    <div class="bg-light col-md-8 order-md-1" id="createuser-formular">
+      <h4 class="mb-3">Benutzerdaten</h4>
+      <form class="needs-validation" novalidate="">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="firstName">Vorname</label>
+            <input type="text" class="form-control" id="firstName" value="" placeholder="Vorname">
+                </div>
+          <div class="col-md-6 mb-3">
+            <label for="lastName">Nachname</label>
+            <input type="text" class="form-control" id="lastName" value="" placeholder="Nachname">
+                </div>
+                    </div>
+
+        
+
+        <div class="mb-3">
+          <label for="email">Email </label>
+          <input type="email" class="form-control" id="email" placeholder="adresse@example.com">
+            </div>
+
+        <div class="mb-3">
+          <label for="phone">Telefon</label>
+          <input type="text" class="form-control" id="phone" placeholder="Telefonnummer">
+            </div>
+			
+		<div class="mb-3">
+          <label for="password">Passwort</label>
+          <input type="password" class="form-control" id="password" placeholder="Passwort">
+            </div>
+			
+        <hr class="mb-4">
+        <button type="submit" class="btn btn-secondary btn-lg btn-block" id="createuser-button">Benutzer erstellen</button>
+      </form>
+    </div>
+  </div>
 	</main>
 
    
-    <<footer class="footer bg-light" >
+    <footer class="footer bg-light" >
       <div class="row">
         <div class="col-lg-4">
           <p> <a>Home</a> </p>
