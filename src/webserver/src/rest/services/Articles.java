@@ -24,7 +24,7 @@ public class Articles {
 	@GET
 	@Path("by-category")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response articlesByCategory(
+	public Response articles_by_category(
 			@QueryParam("category") String category, 
 			@QueryParam("per_page") int per_page, 
 			@QueryParam("page") int page) {
@@ -32,9 +32,9 @@ public class Articles {
 		try {
 			Vector<Article> entries;
 			if (category != null)
-				entries = Article.getEntries(category);
+				entries = Article.get_entries(category);
 			else 
-				entries = Article.getEntries();
+				entries = Article.get_entries();
 
 			if (page == 0) 
 				page = 1;
@@ -58,12 +58,12 @@ public class Articles {
 	}
 	
 	@GET
-	@Path("/view")
+	@Path("/by-id")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response view(@QueryParam("article_id") long article_id) {
+	public Response by_id(@QueryParam("article_id") long article_id) {
 		Gson gson = new Gson();
 		try {
-			Article article = Article.getById(article_id);
+			Article article = Article.get_by_id(article_id);
 			return Response.status(Response.Status.OK).entity(gson.toJson(article)).build();
 		} catch (DatabaseException e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{ return: 1; msg: DatabaseError; }").build();

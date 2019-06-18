@@ -25,7 +25,15 @@ public class Article extends SQLObject {
 		this.cost = cost;
 	}
 	
-	public static Vector<Article> getEntries() throws DatabaseException {
+	public Article(String article_name, String category, String descript, float cost) {
+		super();
+		this.article_name = article_name;
+		this.category = category;
+		this.descript = descript;
+		this.cost = cost;
+	}
+	
+	public static Vector<Article> get_entries() throws DatabaseException {
 		Vector<Article> entries = new Vector<Article>();
 		Connection conn = Article.connectDatabase();
 		try {
@@ -48,7 +56,7 @@ public class Article extends SQLObject {
 		}
 	}
 
-	public static Vector<Article> getEntries(String category) throws DatabaseException {
+	public static Vector<Article> get_entries(String category) throws DatabaseException {
 		Vector<Article> entries = new Vector<Article>();
 		Connection conn = Article.connectDatabase();
 		try {
@@ -72,23 +80,22 @@ public class Article extends SQLObject {
 		}
 	}
 	
-	public static Article getById(long id) throws DatabaseException, InvalidArticleIdException {
+	public static Article get_by_id(long id) throws DatabaseException, InvalidArticleIdException {
 		Connection conn = Article.connectDatabase();
 		try {
-			PreparedStatement prep = conn.prepareStatement("select * from article where article.id = ?;");
+			PreparedStatement prep = conn.prepareStatement("select article_name, category, descript, cost from article where article.id = ?;");
 			prep.setLong(1, id);
 			ResultSet res = prep.executeQuery();
 			if (!res.next()) 
 				throw new InvalidArticleIdException();
 			return new Article(
-					res.getLong("id"),
 					res.getString("article_name"),
 					res.getString("category"),
 					res.getString("descript"),
 					res.getFloat("cost")
 					);
 		} catch (SQLException e) {
-			throw new DatabaseException();
+			throw new DatabaseException(e.toString());
 		}
 	}
 	

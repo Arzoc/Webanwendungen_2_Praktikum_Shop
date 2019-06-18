@@ -20,6 +20,14 @@ public class Creditcard extends SQLObject {
 		this.last_name= last_name;
 	}
 	
+	public Creditcard(String card_number, String expire, String first_name, String last_name) {
+		super();
+		this.card_number = card_number;
+		this.expire = expire;
+		this.first_name = first_name;
+		this.last_name= last_name;
+	}
+	
 	public static void insert_new(Creditcard credit) throws DatabaseException {
 		Connection conn = Paypal.connectDatabase();
 		try {

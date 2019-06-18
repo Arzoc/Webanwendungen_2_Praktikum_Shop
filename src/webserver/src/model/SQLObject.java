@@ -21,7 +21,7 @@ public class SQLObject {
 			return DriverManager.getConnection(SQLObject.sql_qual + UserDependableConfiguration.sqlfilename);
 		} catch (SQLException | ClassNotFoundException e) {
 			System.out.println(e.toString());
-			throw new DatabaseException();
+			throw new DatabaseException(e.toString());
 		}
 	}
 	

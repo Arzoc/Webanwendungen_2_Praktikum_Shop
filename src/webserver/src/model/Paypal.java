@@ -17,6 +17,11 @@ public class Paypal extends SQLObject {
 		this.email = email;
 	}
 	
+	public Paypal(String email) {
+		super();
+		this.email = email;
+	}
+	
 	// paypal.id not used
 	public static void insert_new(Paypal paypal) throws DatabaseException {
 		Connection conn = Paypal.connectDatabase();
