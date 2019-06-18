@@ -17,7 +17,7 @@
     - lastname
     - email
     - phone
-    - password
+    - password hash (sha256)
   - server do
     - insert into account
     - save session cookie
@@ -59,6 +59,11 @@
       }
   - client do
     - display article
+- rest/articles/by-id
+  - send (als queryparam -> url)
+    - article_id
+  - recv
+    - json
 - rest/articles/by-category
   - send (als queryparam -> url)
     - kategorie name
