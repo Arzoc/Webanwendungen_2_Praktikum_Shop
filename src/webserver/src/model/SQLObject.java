@@ -8,7 +8,7 @@ import exceptions.DatabaseException;
 
 public class SQLObject {
 
-	private static final String sqlfilename = "C:\\Users\\Arzoc\\Desktop\\uni\\webanwendungen2\\git\\Webanwendungen_2_Praktikum_Shop\\src\\database\\yourshop.db";
+	private static final String sqlfilename = "..\\..\\..\\database\\yourshop.db";
 	private static final String sql_qual = "jdbc:sqlite:";
 	
 	public SQLObject () {
