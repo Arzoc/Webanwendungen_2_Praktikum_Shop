@@ -27,8 +27,7 @@ public class Articles {
 	public Response articlesByCategory(
 			@QueryParam("category") String category, 
 			@QueryParam("per_page") int per_page, 
-			@QueryParam("page") int page,
-			@QueryParam("token") String token) {
+			@QueryParam("page") int page) {
 		Gson gson = new Gson();
 		try {
 			Vector<Article> entries;
@@ -69,7 +68,7 @@ public class Articles {
 		} catch (DatabaseException e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{ return: 1; msg: DatabaseError; }").build();
 		} catch (InvalidArticleIdException e) {
-			return Response.status(Response.Status.BAD_REQUEST).entity("{ return: 2; msg: InvalidArticleId; }").build();
+			return Response.status(Response.Status.BAD_REQUEST).entity("{ \"return\": 2; \"msg\": \"InvalidArticleId\"; }").build();
 		}
 	}
 }
