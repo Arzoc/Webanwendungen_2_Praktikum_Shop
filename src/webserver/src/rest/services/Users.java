@@ -46,7 +46,7 @@ public class Users {
 		JwtManager jwt = JwtManager.getInstance();
 		Account a = new Account();
 		a.setEmail(email.trim());
-		try { 
+		try {
 			a = Account.fill(a);
 			/* if password in clear form, uncomment this */
 			//String passwordHash = Account.generatePasswordHash(password);
@@ -74,13 +74,13 @@ public class Users {
 			) {
 		String authHeader = headers.getHeaderString(HttpHeaders.AUTHORIZATION);
 		if (authHeader != null && !authHeader.trim().equals(""))
-			return Response.status(Response.Status.OK).entity("{ return: 2; msg: already token supplied; }").build();
+			return Response.status(Response.Status.OK).entity("{ \"return\": 2; \"msg\": \"already token supplied\"; }").build();
 		Account account = new Account();
 		try {
 			Account.insertNew(account);
 			return Response.status(Response.Status.OK).entity("{ return: 0 }").build();
 		} catch (UserAlreadyExistsException e) {
-			return Response.status(Response.Status.OK).entity("{ return: 1; msg: UserAlreadyExists; }").build();
+			return Response.status(Response.Status.OK).entity("{ \"return\": 1; \"msg\": \"UserAlreadyExists\"; }").build();
 		} catch (DatabaseException e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}

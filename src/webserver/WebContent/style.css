@@ -7,10 +7,6 @@
 	height: 100%;
 }
 
-.nav-item:hover {
-	background-color: grey;
-}
-
 .nav-link {
 	color: black;
 }
@@ -19,6 +15,10 @@
 	display: inline-block;
 	width: 100%;
 	height: 100%;
+}
+
+#nav-active {
+	border-radius:5px;
 }
 
 #angebote {
@@ -58,13 +58,21 @@
 }
 
 #login{ margin-left:auto;
-		margin-top:12%;
+		margin-top:5%;
 		margin-bottom:5%;
 		padding:2%;
 		border:1px solid black;
 		width:75%;
 		border-radius:5px;
 		}
+		
+#new-user-button{
+		margin-top:5%;
+}
+
+#new-user-link{
+		text-decoration:none;
+}
 		
 #overview{ 
 		margin-left:auto;
