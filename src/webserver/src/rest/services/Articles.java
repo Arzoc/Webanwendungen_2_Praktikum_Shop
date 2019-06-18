@@ -36,13 +36,12 @@ public class Articles {
 				entries = Article.getEntries(category);
 			else 
 				entries = Article.getEntries();
-			
+
 			if (page == 0) 
 				page = 1;
 			if (per_page == 0) {
 				per_page = ARTICLES_LIST_DEFAULT_PER_PAGE;
 			}
-			
 			int start = per_page * (page - 1);
 			int end = per_page * page;
 			if (end > entries.size())
@@ -54,7 +53,8 @@ public class Articles {
 			String json = gson.toJson(selectedEntries);
 			return Response.status(Response.Status.OK).entity(json).build();
 		} catch (DatabaseException e) {
-			return Response.status(Response.Status.OK).entity("{ return: 1; msg: DatabaseException; }").build();
+			System.out.println(e.toString());
+			return Response.status(Response.Status.OK).entity("{\"return\": 1, \"msg\": \"DatabaseException\"}").build();
 		}
 	}
 	

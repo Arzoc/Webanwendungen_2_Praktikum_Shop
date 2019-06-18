@@ -5,10 +5,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import exceptions.DatabaseException;
+import other.UserDependableConfiguration;
 
 public class SQLObject {
 
-	private static final String sqlfilename = "C:\\Users\\Fun\\Documents\\Webanwendungen_2_Praktikum_Shop\\src\\database\\yourshop.db";
+
+	
 	private static final String sql_qual = "jdbc:sqlite:";
 	
 	public SQLObject () {
@@ -18,8 +20,9 @@ public class SQLObject {
 	public static Connection connectDatabase() throws DatabaseException {
 		try {
 			Class.forName("org.sqlite.JDBC");
-			return DriverManager.getConnection(SQLObject.sql_qual + SQLObject.sqlfilename);
+			return DriverManager.getConnection(SQLObject.sql_qual + UserDependableConfiguration.sqlfilename);
 		} catch (SQLException | ClassNotFoundException e) {
+			System.out.println(e.toString());
 			throw new DatabaseException();
 		}
 	}
