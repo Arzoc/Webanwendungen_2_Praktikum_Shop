@@ -66,6 +66,14 @@
 		border-radius:5px;
 		}
 		
+#new-user-button{
+		margin-top:5%;
+}
+
+#new-user-link{
+		text-decoration:none;
+}
+		
 #overview{ 
 		margin-left:auto;
 		margin-top:2%;
