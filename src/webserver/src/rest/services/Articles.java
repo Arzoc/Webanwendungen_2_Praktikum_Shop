@@ -36,7 +36,7 @@ public class Articles {
 				entries = Article.getEntries(category);
 			else 
 				entries = Article.getEntries();
-			
+
 			if (page == 0) 
 				page = 1;
 			if (per_page == 0) {
@@ -53,6 +53,7 @@ public class Articles {
 			String json = gson.toJson(selectedEntries);
 			return Response.status(Response.Status.OK).entity(json).build();
 		} catch (DatabaseException e) {
+			System.out.println(e.toString());
 			return Response.status(Response.Status.OK).entity("{\"return\": 1, \"msg\": \"DatabaseException\"}").build();
 		}
 	}

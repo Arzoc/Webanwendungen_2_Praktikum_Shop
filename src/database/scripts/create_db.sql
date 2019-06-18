@@ -35,7 +35,7 @@ CREATE TABLE article (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	article_name TEXT NOT NULL,
 	category TEXT,
-    cost REAL,
+    	cost REAL,
 	descript TEXT
 );
 
