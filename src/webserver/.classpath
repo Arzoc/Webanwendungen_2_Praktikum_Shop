@@ -6,8 +6,11 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk-12.0.1"/>
->>>>>>> ddccf910d10903f2a060b1a24e6c032545d93373
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk-12.0.1">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/aopalliance-repackaged-2.5.0.jar"/>
@@ -43,5 +46,8 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-mvc-2.28.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jjwt-0.9.1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/gson-2.8.5.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jackson-core-2.9.9.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jackson-databind-2.9.9.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jackson-annotations-2.9.9.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
