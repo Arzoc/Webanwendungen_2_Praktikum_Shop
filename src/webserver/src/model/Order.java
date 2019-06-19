@@ -20,6 +20,13 @@ public class Order extends SQLObject {
 		this.cost_at_purchase = cost_at_purchase;
 	}
 	
+	public Order(long article_id, long quantity, float cost_at_purchase) {
+		super();
+		this.article_id = article_id;
+		this.quantity = quantity;
+		this.cost_at_purchase = cost_at_purchase;
+	}
+	
 	// quantity, article_id, order_history_id needed -> rest irrelevant
 	public static void insert_new(Order order) throws DatabaseException {
 		Connection conn = Order.connectDatabase();

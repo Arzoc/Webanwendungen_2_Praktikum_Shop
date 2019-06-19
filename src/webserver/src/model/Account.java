@@ -32,6 +32,16 @@ public class Account extends SQLObject {
 		this.pwd_hash = pwd_hash;
 	}
 	
+	public Account(String first_name, String last_name, String email, String phone, String last_login, String pwd_hash) {
+		super();
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.email = email;
+		this.phone = phone;
+		this.last_login = last_login;
+		this.pwd_hash = pwd_hash;
+	}
+	
 	public Account() {
 		super();
 	}
@@ -80,7 +90,7 @@ public class Account extends SQLObject {
 			else
 				throw new UserNotFoundException();
 		} catch (SQLException e) {
-			throw new DatabaseException();
+			throw new DatabaseException(e.toString());
 		}
 	}
 
@@ -104,7 +114,7 @@ public class Account extends SQLObject {
 			Account.closeDatabase(conn);
 			return entries;
 		} catch (SQLException e) {
-			throw new DatabaseException();
+			throw new DatabaseException(e.toString());
 		}
 	}
 	
@@ -138,12 +148,12 @@ public class Account extends SQLObject {
 			prep.executeUpdate();
 			Account.closeDatabase(conn);
 		} catch (SQLException e) {
-			throw new DatabaseException();
+			throw new DatabaseException(e.toString());
 		}
 	}
 	
 	public void checkPassword(String passwordHash) throws InvalidPasswordException {
-		if (!this.pwd_hash.equals(passwordHash.trim()))
+		if (!this.pwd_hash.trim().toUpperCase().equals(passwordHash.trim().toUpperCase()))
 			throw new InvalidPasswordException();
 		return;
 	}

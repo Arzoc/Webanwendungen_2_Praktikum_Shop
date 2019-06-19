@@ -1,10 +1,5 @@
 package other;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -15,24 +10,21 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.impl.TextCodec;
 
 public final class JwtManager {
 	
 	private static JwtManager singleton = null;
-	private PublicKey publicKey = null;
-	private PrivateKey privateKey = null;
+	/* TODO dynamic generation to track users */
+	/* base64 hash of super secret super secret super secret */
+	/* not random, secure */
+	private final String secret_key = "c3VwZXIgc2VjcmV0IHN1cGVyIHNlY3JldCBzdXBlciBzZWNyZXQ=";
+	private byte[] secret_key_bytes;
+	
 	
 	private JwtManager() {
 		super();
-		try {
-			KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA"); // EC (Elliptic curves) -> initialize / RSA
-			gen.initialize(2048);
-			KeyPair pair = gen.generateKeyPair();
-			this.privateKey = pair.getPrivate();
-			this.publicKey = pair.getPublic();
-		} catch (NoSuchAlgorithmException e) {
-			System.out.println("Failed to generate key");
-		}
+		this.secret_key_bytes = TextCodec.BASE64.decode(this.secret_key);
 	}
 	
 	public static JwtManager getInstance() {
@@ -61,12 +53,12 @@ public final class JwtManager {
 				.setIssuer(path)
 				.setIssuedAt(new Date())
 				.setExpiration(this.getTimeInFuture(30, 1))
-				.signWith(SignatureAlgorithm.HS512, this.privateKey)
+				.signWith(SignatureAlgorithm.HS512, this.secret_key_bytes)
 				.compact();
 	}
 	
 	public String getEmail(String token) throws InvalidTokenException {
-		String email = Jwts.parser().setSigningKey(this.publicKey).parseClaimsJws(token).getBody().getSubject();
+		String email = Jwts.parser().setSigningKey(this.secret_key_bytes).parseClaimsJws(token).getBody().getSubject();
 		if (email == null)
 			throw new InvalidTokenException();
 		return email;
@@ -75,7 +67,7 @@ public final class JwtManager {
 	public String validateToken(String authHeader) throws InvalidTokenException {
 		String token = authHeader.substring("Bearer".length()).trim();
 		try {
-			Jwts.parser().setSigningKey(this.publicKey).parseClaimsJws(token);
+			Jwts.parser().setSigningKey(this.secret_key_bytes).parseClaimsJws(token);
 			return token;
 		} catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
 			throw new InvalidTokenException();
