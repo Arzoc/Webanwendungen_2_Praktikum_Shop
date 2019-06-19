@@ -4,10 +4,10 @@ $.ajax({
     //Cookie
   },
   success: function( result ) {
-        $(  "#noorder").html( "" )
+	      $(  "#noorder").html( "" )
         $.each( data, function( key, value ) {
-        $( "main" ).append( "value " );
-        });
-     
-  }
+        $(".table tr:last" ).append( "value " );
+        }); 
+      
+  }//end Success
 })
