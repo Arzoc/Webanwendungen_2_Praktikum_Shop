@@ -30,7 +30,7 @@ public class Paypal extends SQLObject {
 			prep.setString(1, paypal.getEmail());
 			prep.executeUpdate();
 		} catch (SQLException e) { // TODO maybe check what the error was -> payment already exists
-			throw new DatabaseException();
+			throw new DatabaseException(e.toString());
 		}
 	}
 

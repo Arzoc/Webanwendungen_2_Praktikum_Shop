@@ -22,6 +22,7 @@ public class OrderHistory extends SQLObject {
 		this.payment_paypal_id = payment_paypal_id;
 	}
 
+	/* get all entries of table order_history */
 	public static Vector<OrderHistory> getEntries(String email) throws DatabaseException {
 		Vector<OrderHistory> entries = new Vector<OrderHistory>();
 		Connection conn = Account.connectDatabase();

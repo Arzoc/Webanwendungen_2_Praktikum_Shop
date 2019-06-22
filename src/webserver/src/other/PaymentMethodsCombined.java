@@ -11,6 +11,7 @@ public class PaymentMethodsCombined {
 	private Vector<Paypal> paypals;
 	private Vector<Creditcard> creditcards;
 	
+	/* abstraction for the two tables paypal and creditcard */
 	public PaymentMethodsCombined(Vector<Paypal> paypals, Vector<Creditcard> creditcards) {
 		super();
 		this.paypals = paypals;

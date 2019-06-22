@@ -11,6 +11,7 @@ public class Order extends SQLObject {
 	private long id, order_history_id, article_id, quantity;
 	private float cost_at_purchase;
 	
+	/* id, cost_at_purchase not relevant on insert */
 	public Order(long id, long order_history_id, long article_id, long quantity, float cost_at_purchase) {
 		super();
 		this.id = id;

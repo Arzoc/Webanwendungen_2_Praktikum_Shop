@@ -46,7 +46,7 @@ public class Account extends SQLObject {
 		super();
 	}
 	
-	/* find with unique key in order (id, email) */
+	/* find with unique key in order (id, email) and fill found information in account */
 	public static Account fill(Account acc) throws UserNotFoundException, DatabaseException {
 		PreparedStatement prep;
 		Connection conn = SQLObject.connectDatabase();
@@ -94,6 +94,7 @@ public class Account extends SQLObject {
 		}
 	}
 
+	/* get all entries of table account */
 	public static Vector<Account> getEntries() throws DatabaseException {
 		Vector<Account> entries = new Vector<Account>();
 		Connection conn = Account.connectDatabase();
@@ -118,6 +119,7 @@ public class Account extends SQLObject {
 		}
 	}
 	
+	/* hash @param password in sha256 */
 	public static String generatePasswordHash(String password) throws NoSuchAlgorithmException {
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		byte[] encoded = digest.digest(password.getBytes(StandardCharsets.UTF_8));
@@ -128,6 +130,7 @@ public class Account extends SQLObject {
         return sb.toString();
 	}
 	
+	/* insert @param account into table account */
 	public static void insertNew(Account account) throws UserAlreadyExistsException, DatabaseException {
 		Connection conn = Account.connectDatabase();
 		Account tmp = new Account();
@@ -152,8 +155,9 @@ public class Account extends SQLObject {
 		}
 	}
 	
-	public void checkPassword(String passwordHash) throws InvalidPasswordException {
-		if (!this.pwd_hash.trim().toUpperCase().equals(passwordHash.trim().toUpperCase()))
+	/* verify the @param password for this account */
+	public void checkPassword(String password) throws InvalidPasswordException {
+		if (!this.pwd_hash.trim().toUpperCase().equals(password.trim().toUpperCase()))
 			throw new InvalidPasswordException();
 		return;
 	}

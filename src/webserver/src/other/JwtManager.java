@@ -27,6 +27,7 @@ public final class JwtManager {
 		this.secret_key_bytes = TextCodec.BASE64.decode(this.secret_key);
 	}
 	
+	/* singleton class */
 	public static JwtManager getInstance() {
 		if (JwtManager.singleton == null)
 			return new JwtManager();
@@ -47,6 +48,7 @@ public final class JwtManager {
 		}
 	}
 
+	/* create new token, ready to set as header */
 	public String issueToken(String email, String path) {
 		return Jwts.builder()
 				.setSubject(email)
@@ -57,6 +59,7 @@ public final class JwtManager {
 				.compact();
 	}
 	
+	/* get email out of decrypted token */
 	public String getEmail(String token) throws InvalidTokenException {
 		String email = Jwts.parser().setSigningKey(this.secret_key_bytes).parseClaimsJws(token).getBody().getSubject();
 		if (email == null)
@@ -64,6 +67,8 @@ public final class JwtManager {
 		return email;
 	}
 	
+	/* check if token is valid */
+	/* TODO check for correct email in claims */
 	public String validateToken(String authHeader) throws InvalidTokenException {
 		String token = authHeader.substring("Bearer".length()).trim();
 		try {

@@ -38,7 +38,7 @@ public class Creditcard extends SQLObject {
 			prep.setString(4, credit.getLast_name().trim());
 			prep.executeUpdate();
 		} catch (SQLException e) { // TODO maybe check what the error was -> payment already exists
-			throw new DatabaseException();
+			throw new DatabaseException(e.toString());
 		}
 	}
 

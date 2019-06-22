@@ -18,22 +18,25 @@ public class FullOrder {
 	Vector<Order> orders;
 	String buydate;
 	
+	/* abstraction for one entry in table order_history and multiple in table orders */
 	public FullOrder(Vector<Order> orders, String buydate) {
 		super();
 		this.orders = orders;
 		this.buydate = buydate;
 	}
 	
+	/* insert transaction into order_history and orders for every article */
 	public static void insert_transaction(CheckoutParameters params, String account_email) throws DatabaseException, InvalidTransactionParametersException {
+		long order_history_id;
 		if (params.getPaypal_email() != null && !params.getPaypal_email().trim().equals("")) {
-			FullOrder.insert_transaction_paypal(params.getPaypal_email(), account_email.trim());
+			order_history_id = FullOrder.insert_transaction_paypal(params.getPaypal_email(), account_email.trim());
 		} else if (params.getCard_number() != null && !params.getCard_number().trim().equals("")) {
-			FullOrder.insert_transaction_creditcard(params.getCard_number(), account_email.trim());
+			order_history_id = FullOrder.insert_transaction_creditcard(params.getCard_number(), account_email.trim());
 		} else if (params.getPayment_new() != null) {
 			CheckoutParameters.NewPaymentMethod method = params.getPayment_new();
 			if (method.getPaypal_email() != null && !method.getPaypal_email().equals("")) {
 				Paypal.insert_new(new Paypal(0, method.getPaypal_email().trim()));
-				FullOrder.insert_transaction_paypal(method.getPaypal_email().trim(), account_email.trim());
+				order_history_id = FullOrder.insert_transaction_paypal(method.getPaypal_email().trim(), account_email.trim());
 			} else if (method.getCreditcard_card_number() != null && !method.getCreditcard_card_number().equals("")) {
 				Creditcard.insert_new(new Creditcard(
 						0,
@@ -42,19 +45,19 @@ public class FullOrder {
 						method.getCreditcard_first_name().trim(),
 						method.getCreditcard_last_name().trim()
 						));
-				FullOrder.insert_transaction_creditcard(method.getCreditcard_card_number().trim(), account_email.trim());
+				order_history_id = FullOrder.insert_transaction_creditcard(method.getCreditcard_card_number().trim(), account_email.trim());
 			} else throw new InvalidTransactionParametersException();
 		} else {
 			throw new InvalidTransactionParametersException();
 		}
-		//TODO get order_history_id
-		long order_history_id = 0;
+		/* CheckoutParameters.Article differ from model.Article */
 		for (CheckoutParameters.Article article : params.getArticles()) {
 			Order.insert_new(new Order(0, order_history_id, article.getArticle_id(), article.getQuantity(), 0));
 		}
 	}
 
-	private static void insert_transaction_paypal(String paypal_email, String account_email) throws DatabaseException {
+	/* returns order_history.id of newly created row */
+	private static long insert_transaction_paypal(String paypal_email, String account_email) throws DatabaseException {
 		Connection conn = SQLObject.connectDatabase();
 		String insertString;
 		PreparedStatement prep;
@@ -66,12 +69,14 @@ public class FullOrder {
 			prep.setString(2, paypal_email.trim());
 			prep.setString(3, account_email.trim());
 			prep.executeUpdate();
+			return prep.getGeneratedKeys().getLong("order_history.id");
 		} catch (SQLException e) {
 			throw new DatabaseException();
 		}
 	}
-	
-	private static void insert_transaction_creditcard(String card_number, String account_email) throws DatabaseException {
+
+	/* returns order_history.id of newly created row */
+	private static long insert_transaction_creditcard(String card_number, String account_email) throws DatabaseException {
 		Connection conn = SQLObject.connectDatabase();
 		String insertString;
 		PreparedStatement prep;
@@ -83,6 +88,7 @@ public class FullOrder {
 			prep.setString(2, card_number.trim());
 			prep.setString(3, account_email.trim());
 			prep.executeUpdate();
+			return prep.getGeneratedKeys().getLong("order_history.id");
 		} catch (SQLException e) {
 			throw new DatabaseException();
 		}
