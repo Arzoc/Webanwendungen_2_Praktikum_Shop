@@ -18,6 +18,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import java.security.NoSuchAlgorithmException;
+
 import com.google.gson.Gson;
 
 import exceptions.DatabaseException;
@@ -44,20 +46,19 @@ public class Users {
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_HTML)
-	public Response login(@FormParam("email") String email, @FormParam("password") String passwordHash) {
+	public Response login(@FormParam("email") String email, @FormParam("password") String password) {
 		JwtManager jwt = JwtManager.getInstance();
 		Account a = new Account();
 		a.setEmail(email.trim());
 		try {
 			a = Account.fill(a);
-			/* if password in clear form, uncomment this */
-			//String passwordHash = Account.generatePasswordHash(password);
-			a.checkPassword(passwordHash);
+			password = Account.generatePasswordHash(password);
+			a.checkPassword(password);
 			String token = jwt.issueToken(a.getEmail(), uriInfo.getAbsolutePath().toString().trim());
 			return Response.status(Response.Status.OK).header("Authorization", "Bearer " + token).build();
 		} catch (UserNotFoundException | InvalidPasswordException e) {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
-		} catch (DatabaseException /*| NoSuchAlgorithmException*/ e) {
+		} catch (DatabaseException | NoSuchAlgorithmException e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
@@ -170,6 +171,8 @@ public class Users {
 		}		
 	}
 	
+	/* return all payment methods formatted a a json string ready to send */
+	/* TODO maybe don't find user with email, instead user Account.fill */
 	private String get_formatted_payment_methods(String email) throws DatabaseException {
 		Vector<Paypal> paypals;
 		Vector<Creditcard> creditcards;
