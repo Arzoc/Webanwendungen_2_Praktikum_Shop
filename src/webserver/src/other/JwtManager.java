@@ -54,7 +54,7 @@ public final class JwtManager {
 				.setSubject(email)
 				.setIssuer(path)
 				.setIssuedAt(new Date())
-				.setExpiration(this.getTimeInFuture(30, 1))
+				.setExpiration(this.getTimeInFuture(30, 1)) /* 30 minute auto logout */
 				.signWith(SignatureAlgorithm.HS512, this.secret_key_bytes)
 				.compact();
 	}
@@ -69,6 +69,7 @@ public final class JwtManager {
 	
 	/* check if token is valid */
 	/* TODO check for correct email in claims */
+	/* TOOD set auto logout timeout new */
 	public String validateToken(String authHeader) throws InvalidTokenException {
 		String token = authHeader.substring("Bearer".length()).trim();
 		try {

@@ -66,9 +66,9 @@ public class Articles {
 			Article article = Article.get_by_id(article_id);
 			return Response.status(Response.Status.OK).entity(gson.toJson(article)).build();
 		} catch (DatabaseException e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{ return: 1; msg: DatabaseError; }").build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{ \"return\": 1 \"msg\": \"DatabaseError\" }").build();
 		} catch (InvalidArticleIdException e) {
-			return Response.status(Response.Status.BAD_REQUEST).entity("{ \"return\": 2; \"msg\": \"InvalidArticleId\"; }").build();
+			return Response.status(Response.Status.BAD_REQUEST).entity("{ \"return\": 2, \"msg\": \"InvalidArticleId\" }").build();
 		}
 	}
 }

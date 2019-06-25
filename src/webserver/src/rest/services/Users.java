@@ -87,9 +87,9 @@ public class Users {
 				passwordHash.trim());
 		try {
 			Account.insertNew(account);
-			return Response.status(Response.Status.OK).entity("{ return: 0 }").build();
+			return Response.status(Response.Status.OK).entity("{ \"return\": 0 }").build();
 		} catch (UserAlreadyExistsException e) {
-			return Response.status(Response.Status.OK).entity("{ \"return\": 1; \"msg\": \"UserAlreadyExists\"; }").build();
+			return Response.status(Response.Status.OK).entity("{ \"return\": 1, \"msg\": \"UserAlreadyExists\" }").build();
 		} catch (DatabaseException e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
