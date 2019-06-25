@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import exceptions.DatabaseException;
 import exceptions.InvalidArticleIdException;
+import exceptions.InvalidCategoryException;
 
 public class Article extends SQLObject {
 
@@ -94,6 +95,24 @@ public class Article extends SQLObject {
 					res.getString("descript"),
 					res.getFloat("cost")
 					);
+		} catch (SQLException e) {
+			throw new DatabaseException(e.toString());
+		}
+	}
+	
+	/* returns number of articles in specific category */
+	public static long get_num_articles_in_category(String category) throws DatabaseException, InvalidCategoryException {
+		long num_articles;
+		Connection conn = Article.connectDatabase();
+		try {
+			PreparedStatement prep = conn.prepareStatement("select count(id) as c from article where category = ?;");
+			prep.setString(1, category);
+			ResultSet res = prep.executeQuery();
+			if (!res.next()) 
+				throw new InvalidCategoryException();
+			num_articles = res.getLong("c");
+			Article.closeDatabase(conn);
+			return num_articles;
 		} catch (SQLException e) {
 			throw new DatabaseException(e.toString());
 		}

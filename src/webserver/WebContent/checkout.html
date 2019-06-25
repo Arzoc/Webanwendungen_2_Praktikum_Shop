@@ -49,7 +49,7 @@
       </div>
     <div class="bg-light col-md-8 order-md-1" id="checkout-formular">
       <h4 class="mb-3">Rechnungsadresse</h4>
-      <form class="needs-validation" novalidate="">
+      <!-- <form class="needs-validation" novalidate=""> -->
         <div class="row">
           <div class="col-md-6 mb-3">
             <label for="firstName">Vorname</label>
@@ -103,37 +103,47 @@
             <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input">
             <label class="custom-control-label" for="paypal">PayPal</label>
           </div>
-		 <div class="new-paymethod">
-		 <h4  class="mb-3">Neue Kreditkarte</h4>
-		 <div class="mb-3">
-		 <label for="firstCreditCardName">Vorname</label>
-         <input type="text" class="form-control" id="firstCreditCardName" value="" placeholder="Vorname">
+          
+          <div id="known-payment-methods">
+          
+          	<p></p>
+         	<div class="btn-group btn-group-toggle btn-group-vertical container-fluid" data-toggle="buttons">
+			  
+			</div>
+			
+          </div>
+          
+		 <div class="new-paymethod collapse card card-body">
+			 <h4  class="mb-3">Neue Kreditkarte</h4>
+			 <div class="mb-3">
+			 <label for="firstCreditCardName">Vorname</label>
+	         <input type="text" class="form-control" id="firstCreditCardName" value="" placeholder="Vorname">
+			 </div>
+			 <div class="mb-3">
+			 <label for="lastCreditCardName">Nachname</label>
+	         <input type="text" class="form-control" id="lastCreditCardName" value="" placeholder="Nachname">
+			 </div>
+			 <div class="mb-3">
+	         <label for="Cardnumber">Kartennummer</label>
+	         <input type="text" class="form-control" id="Cardnumber" placeholder="xxxx xxxx xxxx xxxx xxxx">
+	         </div>
+			 <div class="mb-3">
+			 <label for="PayPalAdress">Gültig bis:</label>
+	         <input type="text" class="form-control" id="CardExpire" placeholder="xx/xx">
+	         </div>
+			 <div class="new-paymethod">
+			 <h4 class="mb-3">PayPal Adresse</h4>
+			 <div class="mb-3">
+	         <input type="email" class="form-control" id="PayPalAdress" placeholder="adresse@example.com">
+	         </div>
 		 </div>
-		 <div class="mb-3">
-		 <label for="lastCreditCardName">Nachname</label>
-         <input type="text" class="form-control" id="lastCreditCardName" value="" placeholder="Nachname">
-		 </div>
-		 <div class="mb-3">
-         <label for="Cardnumber">Kartennummer</label>
-         <input type="text" class="form-control" id="Cardnumber" placeholder="xxxx xxxx xxxx xxxx xxxx">
-         </div>
-		 <div class="mb-3">
-		 <label for="PayPalAdress">Gültig bis:</label>
-         <input type="text" class="form-control" id="PayPalAdress" placeholder="xx/xx">
-         </div>
-		 </div>
-		 <div class="new-paymethod">
-		 <h4 class="mb-3">PayPal Adresse</h4>
-		 <div class="mb-3">
-         <input type="email" class="form-control" id="PayPalAdress" placeholder="adresse@example.com">
-         </div>
 		 </div>
         </div>
         
         
         <hr class="mb-4">
         <button type="submit" class="btn btn-secondary btn-lg btn-block" id="checkout-button">Kostenpflichtig bestellen</button>
-      </form>
+      <!-- </form> -->
     </div>
   </div>
   
@@ -152,8 +162,9 @@
         </div>
       </div>      
     </footer>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  	<script src="js/checkout.js"></script>
   </body>
 </html>

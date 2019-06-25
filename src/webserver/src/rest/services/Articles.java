@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 
 import exceptions.DatabaseException;
 import exceptions.InvalidArticleIdException;
+import exceptions.InvalidCategoryException;
 import model.Article;
 
 @Path("/articles")
@@ -54,6 +55,21 @@ public class Articles {
 		} catch (DatabaseException e) {
 			System.out.println(e.toString());
 			return Response.status(Response.Status.OK).entity("{\"return\": 1, \"msg\": \"DatabaseException\"}").build();
+		}
+	}
+	
+	@GET
+	@Path("num-items-in-category")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response items_in_category(@QueryParam("category") String category) {
+		long num_articles;
+		try {
+			num_articles = Article.get_num_articles_in_category(category);
+			return Response.status(Response.Status.OK).entity("{ \" return\": 0, \"num_articles\" : " + Long.toString(num_articles) + " }").build();
+		} catch (DatabaseException e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		} catch (InvalidCategoryException e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
 	

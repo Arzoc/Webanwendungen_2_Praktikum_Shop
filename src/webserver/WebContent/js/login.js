@@ -15,14 +15,8 @@ $( "#login-button").click(function( event ) {
  		},
  		success: function( result, textStatus, jqxhr) {
 		  //Set JWT token
- 			console.log(result);
- 			console.log(textStatus);
- 			console.log(jqxhr.getAllResponseHeaders());
- 		  console.log(jqxhr.getResponseHeader("authorization"));
 		  localStorage.token=jqxhr.getResponseHeader("authorization");
-		  console.log(result.token);
-		  alert( "Eingeloggt");
- 												},
+ 		},
  		error: function( text, textStatus ) {
     	console.log(text.status);
   	  	if (text.status==401){

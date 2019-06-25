@@ -4,7 +4,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import exceptions.InvalidTokenException;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -71,10 +73,14 @@ public final class JwtManager {
 	/* TODO check for correct email in claims */
 	/* TOOD set auto logout timeout new */
 	public String validateToken(String authHeader) throws InvalidTokenException {
+		System.out.println(authHeader);
 		String token = authHeader.substring("Bearer".length()).trim();
 		try {
-			Jwts.parser().setSigningKey(this.secret_key_bytes).parseClaimsJws(token);
-			return token;
+			Jws<Claims> claims = Jwts.parser().setSigningKey(this.secret_key_bytes).parseClaimsJws(token);
+			String email = claims.getBody().getSubject();
+			String path = claims.getBody().getIssuer();
+			String new_token = issueToken(email, path);
+			return new_token;
 		} catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
 			throw new InvalidTokenException();
 		}
