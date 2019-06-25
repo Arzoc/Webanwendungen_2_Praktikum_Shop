@@ -1,8 +1,8 @@
 
-$( "#login button").click(function( event ) {
+$( "#login-button").click(function( event ) {
   var na_me = document.querySelector('input[name="username"]').value;
  var p_w= document.querySelector('input[name="password"]').value;
-  console.log($("#login button"));
+  //console.log($("#login button"));
  	$.ajax({
  		type: "POST", 
  		url: "/Yourshop/rest/users/login",
@@ -10,12 +10,16 @@ $( "#login button").click(function( event ) {
  		//if we have token send this Token
  		beforeSend: function(xhr){
  			if (localStorage.token) {
- 			xhr.setRequestHeader('Authorization', 'Bearer' + localStorage.token);
+ 			xhr.setRequestHeader('Authorization',  localStorage.token);
  			}
  		},
- 		success: function( result, textStatus ) {
+ 		success: function( result, textStatus, jqxhr) {
 		  //Set JWT token
-		  localStorage.token=result.token;
+ 			console.log(result);
+ 			console.log(textStatus);
+ 			console.log(jqxhr.getAllResponseHeaders());
+ 		  console.log(jqxhr.getResponseHeader("authorization"));
+		  localStorage.token=jqxhr.getResponseHeader("authorization");
 		  console.log(result.token);
 		  alert( "Eingeloggt");
  												},
