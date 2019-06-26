@@ -73,13 +73,14 @@ public final class JwtManager {
 	/* TODO check for correct email in claims */
 	/* TOOD set auto logout timeout new */
 	public String validateToken(String authHeader) throws InvalidTokenException {
-		System.out.println(authHeader);
+		if (authHeader == null) 
+			throw new InvalidTokenException();
 		String token = authHeader.substring("Bearer".length()).trim();
 		try {
 			Jws<Claims> claims = Jwts.parser().setSigningKey(this.secret_key_bytes).parseClaimsJws(token);
 			String email = claims.getBody().getSubject();
 			String path = claims.getBody().getIssuer();
-			String new_token = issueToken(email, path);
+			String new_token = issueToken(email, path); /* re-set new token for updated timeout */
 			return new_token;
 		} catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
 			throw new InvalidTokenException();

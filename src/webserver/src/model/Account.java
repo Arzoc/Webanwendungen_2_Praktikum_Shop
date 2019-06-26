@@ -21,6 +21,18 @@ public class Account extends SQLObject {
 	private long id = -1;
 	private String first_name, last_name, email, phone, last_login, pwd_hash;
 	
+	public static class ViewableAccount {
+		private String first_name, last_name, email, phone, last_login;
+		
+		public ViewableAccount(String email, String first_name, String last_name, String phone, String last_login) {
+			this.email = email;
+			this.first_name = first_name;
+			this.last_name = last_name;
+			this.phone = phone;
+			this.last_login = last_login;
+		}
+	}
+	
 	public Account(int id, String first_name, String last_name, String email, String phone, String last_login, String pwd_hash) {
 		super();
 		this.id = id;

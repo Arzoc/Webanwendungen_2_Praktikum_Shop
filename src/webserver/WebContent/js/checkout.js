@@ -15,7 +15,6 @@ function paypal_changed() {
 }
 
 $(document).ready(function() {
-	
 	if ($("#paypal").prop("checked")) {
 		paypal_changed();
 	} else if ($("#credit").prop("checked")) {
@@ -30,7 +29,7 @@ $(document).ready(function() {
 		url: "rest/users/payment-methods",
 		beforeSend: function(xhr){
  			if (localStorage.token) {
- 			xhr.setRequestHeader('Authorization',  localStorage.token);
+ 				xhr.setRequestHeader('Authorization',  localStorage.token);
  			}
  		},
  		success: function(result, text_status, jqxhr) {
