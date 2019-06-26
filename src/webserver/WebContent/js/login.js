@@ -52,7 +52,8 @@ $(document).ready(function() {
 	})) {
 	} else {
 		logout();
-		handle_semi_logged_in();
+		if (!(!token_exists && !email_exists)) /* check if we're just not logged in */
+			handle_semi_logged_in();
 		$("#login-button").click(function() {
 		  var email = document.querySelector('input[name="username"]').value;
 		  var password = document.querySelector('input[name="password"]').value;

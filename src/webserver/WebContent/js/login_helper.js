@@ -37,7 +37,7 @@ function login(email, password, event_handling) {
 		  localStorage.token = jqxhr.getResponseHeader("Authorization");
 		  get_account_info(function(result){
 			  localStorage.email = result.email;
-			  event_handling(SUCCESS);
+			  event_handling(SUCCESS); /* async -> needs to be called inside here, otherwise any changes happen before success (e.g. set email) */
 		  }, function() {
 			  console.log("failed to get account info");
 		  })
