@@ -39,25 +39,36 @@ function handle_already_logged_in() {
 	$("#login").append("<p><strong>Already logged in.</strong></p>");
 }
 
+function allow_login(token_exists, email_exists) {
+	logout();
+	if (!(!token_exists && !email_exists)) /* check if we're just not logged in */
+		handle_semi_logged_in();
+	$("#login-button").click(function() {
+	  var email = document.querySelector('input[name="username"]').value;
+	  var password = document.querySelector('input[name="password"]').value;
+		login(email, password, event_handling);
+	});
+}
+
 $(document).ready(function() {
 	
 	var token_exists = !(localStorage.token === undefined);
 	var email_exists = !(localStorage.email === undefined);
 	
 	/* lazy eval */
-	if (token_exists && email_exists && is_logged_in(function(result) {
-		handle_already_logged_in();
-	}, function() {
-		console.log("Failed to check for login");
-	})) {
-	} else {
-		logout();
-		if (!(!token_exists && !email_exists)) /* check if we're just not logged in */
-			handle_semi_logged_in();
-		$("#login-button").click(function() {
-		  var email = document.querySelector('input[name="username"]').value;
-		  var password = document.querySelector('input[name="password"]').value;
-			login(email, password, event_handling);
-		});
-	}
+	if (token_exists && email_exists)
+		is_logged_in(
+			function(result) { /* success */
+				handle_already_logged_in();
+			}, 
+			function(result) { /* error handling */
+				if (result.status == 401) {
+					console.log("login determined: user not logged in -> login possible");
+					allow_login(token_exists, email_exists);
+				} else
+					console.log("Failed to check for login"); /* other error */
+			}
+		)
+	else
+		allow_login(false, false);
 });

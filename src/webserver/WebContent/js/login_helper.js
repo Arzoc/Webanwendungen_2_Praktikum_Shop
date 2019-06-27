@@ -69,13 +69,14 @@ function is_logged_in(positive_handling, negative_handling) {
 		type: "GET",
 		url: "rest/users/account-info",
 		beforeSend: function(xhr) {
-			xhr.setRequestHeader("Authorization", localStorage.token);
+			if (localStorage.token !== undefined)
+				xhr.setRequestHeader("Authorization", localStorage.token);
 		},
 		success: function(result) {
 			positive_handling(result);
 		},
 		error: function(result) {
-			negative_handling()
+			negative_handling(result)
 		}
 	});
 	return true;
@@ -90,20 +91,25 @@ $(document).ready(function() {
 	var token_exists = !(localStorage.token === undefined);
 	var email_exists = !(localStorage.email === undefined);
 	
-	token_exists && email_exists && is_logged_in(function(result) {
+	token_exists && email_exists && is_logged_in(
+			function(result) { /* success */
 				
-		$("#login_nav_item a").prop("text", "Logout");
-		get_account_info(function(result) {
-			$("#logged_in_info").append("Logged in as: " + result.email);
-		},
-		function() {
-			$("#logged_in_info").append("Failed to get current account info");
-		})
-		$("#login_nav_item a").click(function() {
-			logout();
-			window.location.replace = "login.html";
-		})
-	}, function() {
-		console.log("Failed to get is logged in");
-	});
+				$("#login_nav_item a").prop("text", "Logout");
+				get_account_info(function(result) {
+					$("#logged_in_info").append("Logged in as: " + result.email);
+				},
+				function() {
+					$("#logged_in_info").append("Failed to get current account info");
+				})
+				$("#login_nav_item a").click(function() {
+					logout();
+					window.location.replace = "login.html";
+				})
+			}, 
+			function(result) { /* error handling */
+				if (result.status == 401)
+					console.log("login_helper determined login status");
+				else
+					console.log("Failed to get is logged in");
+			});
 });
