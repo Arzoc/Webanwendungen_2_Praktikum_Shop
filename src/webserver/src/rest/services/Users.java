@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.ws.rs.Consumes;
@@ -182,7 +184,7 @@ public class Users {
 				}
 				orders.add(new FullOrder(
 						tmpOrders,
-						order_ids.getString("buydate")
+						(new SimpleDateFormat("MMMM d, yyyy 'at' h:mm a")).format(new Date(Long.parseLong(order_ids.getString("buydate")) * 1000L))
 						));
 			}
 			SQLObject.closeDatabase(conn);

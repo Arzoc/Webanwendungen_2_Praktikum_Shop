@@ -84,13 +84,12 @@ $(document).ready(function() {
 		var checked_option = $("#known-payment-methods input[type=radio]:checked")[0];
 		var checked_info = $("#known-payment-methods input[type=radio]:checked")[0].offsetParent.dataset.target;
 		var paypal_email, articles, card_number, payment_new;
-	
 		
 		if (checked_option.id.startsWith("paypal")) {
 			let index = checked_option.id.substring(13, 14);
 			paypal_email = known_payment_methods.paypals[index].email;
 		} else if (checked_option.id.startsWith("creditcard")) {
-			let index = checked_option.id.substring(13, 14);
+			let index = checked_option.id.substring(17, 18);
 			card_number = known_payment_methods.creditcards[index].card_number;
 		} else {
 			if ($("#paypal").prop("checked")) {
@@ -105,6 +104,8 @@ $(document).ready(function() {
 			}
 		}
 		
+		var articles = JSON.parse(localStorage.cart);
+		
 		var post_data = { articles, paypal_email, card_number, payment_new }
 		$.ajax({
 			type: "POST",
@@ -114,9 +115,10 @@ $(document).ready(function() {
 	 			xhr.setRequestHeader('Authorization',  localStorage.token);
 	 			}
 	 		},
-			data : post_data,
+			data : { checkout_params: JSON.stringify(post_data) },
 			success: function() {
-				console.log("success");
+				localStorage.cart = "[]";
+				window.location.replace("order_history.html");
 			}
 		})
 	});

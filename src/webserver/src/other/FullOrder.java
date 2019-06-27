@@ -2,6 +2,7 @@ package other;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Vector;
@@ -61,6 +62,7 @@ public class FullOrder {
 		Connection conn = SQLObject.connectDatabase();
 		String insertString;
 		PreparedStatement prep;
+		ResultSet set;
 		insertString = "insert into order_history (order_state, buydate, payment_paypal_id, account_id) values "
 				+ "(0, ?, (select paypal.id from paypal where paypal.email = ?), (select account.id from account where account.email = ?))";
 		try {
@@ -69,9 +71,11 @@ public class FullOrder {
 			prep.setString(2, paypal_email.trim());
 			prep.setString(3, account_email.trim());
 			prep.executeUpdate();
-			return prep.getGeneratedKeys().getLong("order_history.id");
+			set =  prep.getGeneratedKeys();
+			set.next();
+			return set.getLong(1); /* column name: last_insert_rowid() */
 		} catch (SQLException e) {
-			throw new DatabaseException();
+			throw new DatabaseException(e.toString());
 		}
 	}
 
@@ -80,6 +84,7 @@ public class FullOrder {
 		Connection conn = SQLObject.connectDatabase();
 		String insertString;
 		PreparedStatement prep;
+		ResultSet set;
 		insertString = "insert into order_history (order_state, buydate, payment_creditcard_id, account_id) values"
 				+ "(0, ?, (select creditcard.id from creditcard where creditcard.card_number = ?), (select account.id from account where account.email = ?))";
 		try {
@@ -88,9 +93,11 @@ public class FullOrder {
 			prep.setString(2, card_number.trim());
 			prep.setString(3, account_email.trim());
 			prep.executeUpdate();
-			return prep.getGeneratedKeys().getLong("order_history.id");
+			set =  prep.getGeneratedKeys();
+			set.next();
+			return set.getLong(1);
 		} catch (SQLException e) {
-			throw new DatabaseException();
+			throw new DatabaseException(e.toString());
 		}
 	}
 	
