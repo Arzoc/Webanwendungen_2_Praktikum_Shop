@@ -9,14 +9,26 @@ $( "#createuser-button").click(function( event ) {
 	var pho_ne= document.querySelector("#phone").value;
 	var pass_word= document.querySelector("#password").value;
  	//if(!$(".form-control").val(value)){alert( "Alle Felder müssen befüllt sein !");} //empty check
+	window.location.replace("login.html");
 	if(ValidateInput() == 1){
  	$.ajax({
  		 type: "POST", 
  		 url: "/Yourshop/rest/users/create",
- 		  data: { firstname: first_name, lastname: last_name, email: e_mail, phone: pho_ne, password: pass_word 
- 		   },
+ 		 data: { firstname: first_name, lastname: last_name, email: e_mail, phone: pho_ne, password: pass_word 
+ 		 },
  		  success: function( result, textStatus ) {
- 			  console.log("Benutzer erstellt" + result);
+ 			  console.log("Benutzer erstellt" + result.result);
+ 			  if(result.result == 0){
+ 				 console.log("User created");
+ 				 //alert( "Benutzer erstellt");
+ 				 window.location.replace("login.html");
+ 			  }
+ 			  else if(result.result == 1){
+ 				 console.log("User exists");
+ 				 alert( "Benutzer existiert bereits");
+ 			  }
+ 			  //1 already exists
+ 			  //0 user created
  		  },
  		  error: function( text, textStatus ) {
  			 console.log(text);
