@@ -13,12 +13,13 @@ function getUrlVars() {
 $(document).ready(function (){
 	var urlparams = getUrlVars();
 	console.log(urlparams);
-	if(urlparams.id === undefined){
+	if(urlparams.article_id === undefined){
 		return;
 	}
+	console.log("rest/articles/by-id?article_id=" + urlparams.article_id);
 	$.ajax({
 		
-		  url: "rest/articles/by-id?article_id=" + urlparams.id,
+		  url: "rest/articles/by-id?article_id=" + urlparams.article_id,
 		 
 		  success: function( result) {
 			  $("#price_tag").html(result.cost + " €");
@@ -33,15 +34,21 @@ $(document).ready(function (){
 });//end doc ready
 //add to cart
 $( "#btn-cart").click(function( event ) {
+	var urlparams = getUrlVars();
 	//create cart if it doesnt exist
 	if(localStorage.cart === undefined){
-		localStorage.cart;
+		localStorage.cart = "[]";
+		
 	}
+	var tmp = JSON.parse(localStorage.cart);
+	tmp.push({article_id: urlparams.article_id, quanitity: 1});
+	localStorage.cart = JSON.stringify(tmp);
+	/*
 	console.log(localStorage.cart)
 	var urlparams = getUrlVars();
 	console.log(urlparams.id)
 	to_cart = {article_id: parseInt(urlparams.id), quanitity: 1};
-	localStorage.setItem('cart', JSON.stringify(to_cart));
+	//localStorage.setItem('cart', JSON.stringify(to_cart));
 	//localStorage.cart = ({article_id: urlparams.article_id, quanitity: 1});
-
+	*/
 }); //end .click
