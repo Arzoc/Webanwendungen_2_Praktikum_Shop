@@ -16,7 +16,10 @@ $(document).ready(function (){
 	if(urlparams.article_id === undefined){
 		return;
 	}
-	console.log("rest/articles/by-id?article_id=" + urlparams.article_id);
+	//replace img
+	imgpath = "article_thumbnails/" + urlparams.article_id + ".jpg";
+	$("#thumbnail").attr("src", imgpath);
+	
 	$.ajax({
 		
 		  url: "rest/articles/by-id?article_id=" + urlparams.article_id,
@@ -24,6 +27,7 @@ $(document).ready(function (){
 		  success: function( result) {
 			  $("#price_tag").html(result.cost + " €");
 			  $("#desc_tag").html(result.descript );
+			  $("#article_tag").html(result.article_name + " kaufen");
 		  },
 		  error: function( text, textStatus ) {
 		    	console.log(text);
@@ -41,8 +45,11 @@ $( "#btn-cart").click(function( event ) {
 		
 	}
 	var tmp = JSON.parse(localStorage.cart);
-	tmp.push({article_id: urlparams.article_id, quanitity: 1});
-	localStorage.cart = JSON.stringify(tmp);
+	if(!test_article_in_cart(urlparams.article_id, tmp)){
+		tmp.push({article_id: urlparams.article_id});
+		localStorage.cart = JSON.stringify(tmp);
+	}
+	
 	/*
 	console.log(localStorage.cart)
 	var urlparams = getUrlVars();
@@ -52,3 +59,17 @@ $( "#btn-cart").click(function( event ) {
 	//localStorage.cart = ({article_id: urlparams.article_id, quanitity: 1});
 	*/
 }); //end .click
+
+function test_article_in_cart(test,cart){
+	
+	for (i = 0; i < cart.length; i++ ){
+		console.log(test);
+		console.log(cart[i].article_id);
+		if(test == cart[i].article_id){
+			console.log("test");
+			return true;
+		}
+	}
+	return false;
+}
+	
