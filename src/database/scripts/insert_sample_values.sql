@@ -6,7 +6,8 @@ insert into paypal (email) values
     ("irgendwas@test.de"),
     ("andereemail@test.de");
 insert into creditcard (card_number, expire, first_name, last_name) values
-    ("0948350943850943", "01.01.2020", "anderer", "name");
+    ("0948350943850943", "01.01.2020", "anderer", "name"),
+    ("7892347894927494", "01.01.2020", "nochein", "name");
 insert into article (article_name, cost, category, descript) values
     ("banana", 2.50, "food", "these are bananas"),
     ("apple", 3.00, "food", "these are apples"),

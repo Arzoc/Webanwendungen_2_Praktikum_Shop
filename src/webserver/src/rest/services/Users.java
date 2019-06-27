@@ -107,7 +107,7 @@ public class Users {
 			String token = jwt.validateToken(auth_header);
 			String email = jwt.getEmail(token);
 			String json = this.get_formatted_payment_methods(email);
-			return Response.status(Response.Status.OK).entity(json).build();
+			return Response.status(Response.Status.OK).header("Authorization", "Bearer " + token).entity(json).build();
 		} catch (InvalidTokenException e) {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		} catch (DatabaseException e) {
@@ -127,7 +127,29 @@ public class Users {
 			String token = jwt.validateToken(auth_header);
 			String email = jwt.getEmail(token);
 			String json = this.get_formatted_order_history(email);
-			return Response.status(Response.Status.OK).entity(json).build();
+			return Response.status(Response.Status.OK).header("Authorization", "Bearer " + token).entity(json).build();
+		} catch (InvalidTokenException e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		} catch (DatabaseException e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+	
+	@GET
+	@Path("account-info")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response get_account_info(@Context HttpHeaders headers) {
+		JwtManager jwt = JwtManager.getInstance();
+		String auth_header = headers.getHeaderString(HttpHeaders.AUTHORIZATION);
+		try {
+			if (auth_header == null)
+				throw new InvalidTokenException();
+			String token = jwt.validateToken(auth_header);
+			String email = jwt.getEmail(token);
+			String json = this.get_formatted_user_info(email);
+			return Response.status(Response.Status.OK).header("Authorization", "Bearer " + token).entity(json).build();
+		} catch (UserNotFoundException e) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		} catch (InvalidTokenException e) {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		} catch (DatabaseException e) {
@@ -187,7 +209,7 @@ public class Users {
 			while (res.next()) {
 				paypals.add(new Paypal(res.getString("email")));
 			}
-			prep = conn.prepareStatement("select creditcard.card_number, creditcard.expire, creditcard.first_name, creditcard.last_name from account, order_history, orders, creditcard where account.id = order_history.account_id and order_history.payment_creditcard_id = creditcard.id and account.email = ?;");
+			prep = conn.prepareStatement(" select creditcard.card_number, creditcard.expire, creditcard.first_name, creditcard.last_name from account, order_history, creditcard where order_history.account_id = account.id and account.email = ? and order_history.payment_creditcard_id = creditcard.id;");
 			prep.setString(1, email.trim());
 			res = prep.executeQuery();
 			creditcards = new Vector<Creditcard>();
@@ -205,4 +227,18 @@ public class Users {
 		return gson.toJson(new PaymentMethodsCombined(paypals, creditcards));
 	}
 	
+	private String get_formatted_user_info(String email) throws DatabaseException, UserNotFoundException {
+		Gson gson = new Gson();
+		Account account = new Account();
+		account.setEmail(email);
+		Account.fill(account);
+		Account.ViewableAccount va = new Account.ViewableAccount(
+				account.getEmail(), 
+				account.getFirst_name(), 
+				account.getLast_name(), 
+				account.getPhone(), 
+				account.getLast_login()
+				);
+		return gson.toJson(va);
+	}
 }

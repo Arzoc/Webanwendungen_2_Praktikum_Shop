@@ -1,40 +1,63 @@
+/**
+ * uses functions from login_helper.js
+ */
 
-$( "#login-button").click(function( event ) {
-  var na_me = document.querySelector('input[name="username"]').value;
- var p_w= document.querySelector('input[name="password"]').value;
-  //console.log($("#login button"));
- 	$.ajax({
- 		type: "POST", 
- 		url: "/Yourshop/rest/users/login",
- 		data: { email: na_me, password: p_w},
- 		//if we have token send this Token
- 		beforeSend: function(xhr){
- 			if (localStorage.token) {
- 			xhr.setRequestHeader('Authorization',  localStorage.token);
- 			}
- 		},
- 		success: function( result, textStatus, jqxhr) {
-		  //Set JWT token
- 			console.log(result);
- 			console.log(textStatus);
- 			console.log(jqxhr.getAllResponseHeaders());
- 		  console.log(jqxhr.getResponseHeader("authorization"));
-		  localStorage.token=jqxhr.getResponseHeader("authorization");
-		  console.log(result.token);
-		  alert( "Eingeloggt");
- 												},
- 		error: function( text, textStatus ) {
-    	console.log(text.status);
-  	  	if (text.status==401){
-  		$( "#login" ).append( "<p><strong>Falsche Anmeldedaten</strong></p>" );
-  		  //alert( "Falscher Credentials ");
-  	  		}//end if 
-  		else{$( "#login" ).append( "<p><strong>Bitte Support kontaktieren !</strong></p>" );}
-      
-  	  	}//end error
-	  //$( "#weather-temp" ).html( "<strong>" + result + "</strong> degrees" );
+function error_msg(msg) {
+	$("#login_messages").empty();
+	$("#login_messages" ).append(msg);
+}
 
-        });  //end Ajax
-  alert( "Guten Tag " + na_me + " mit Passwort: " + p_w);
-  event.preventDefault();
-}); //end .click
+
+/**
+ * 
+ * @param event SUCCESS, WRONG_CREDENTIALS, OTHER_ERROR
+ * @returns 
+ */
+function event_handling(event) {
+	switch (event){
+	case SUCCESS:
+		error_msg("<p><strong>Login successfull</strong></p>");
+		window.location.replace("index.html");
+		break;
+	case WRONG_CREDENTIALS:
+		error_msg( "<p><strong>Falsche Anmeldedaten</strong></p>" );
+		break;
+	case OTHER_ERROR:
+		error_msg( "<p><strong>Bitte Support kontaktieren !</strong></p>" );
+		break;
+	default:
+		error_msg( "<p><strong>Unknown event</strong></p>" );
+	}
+}
+
+function handle_semi_logged_in() {
+	error_msg("<p><strong>You were logged out. </strong></p>");
+}
+
+function handle_already_logged_in() {
+	$("#login").empty();
+	$("#login").append("<p><strong>Already logged in.</strong></p>");
+}
+
+$(document).ready(function() {
+	
+	var token_exists = !(localStorage.token === undefined);
+	var email_exists = !(localStorage.email === undefined);
+	
+	/* lazy eval */
+	if (token_exists && email_exists && is_logged_in(function(result) {
+		handle_already_logged_in();
+	}, function() {
+		console.log("Failed to check for login");
+	})) {
+	} else {
+		logout();
+		if (!(!token_exists && !email_exists)) /* check if we're just not logged in */
+			handle_semi_logged_in();
+		$("#login-button").click(function() {
+		  var email = document.querySelector('input[name="username"]').value;
+		  var password = document.querySelector('input[name="password"]').value;
+			login(email, password, event_handling);
+		});
+	}
+});
