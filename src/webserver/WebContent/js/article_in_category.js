@@ -51,6 +51,8 @@ $(document).ready(function (){
 	var per_page = 10;
 	rebuild_articles(urlparams.category, 1, per_page);
 	
+	$("#category-heading").append(urlparams.category[0].toUpperCase() + urlparams.category.substring(1));
+	
 	$.ajax({
 		type: "GET",
 		url: "rest/articles/num-items-in-category?category=" + urlparams.category,
